@@ -27,12 +27,14 @@ void CExamSliderCtrlDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MY_SLIDER, m_my_slider);
+	DDX_Control(pDX, IDC_EVENT_LIST, m_event_list);
 }
 
 BEGIN_MESSAGE_MAP(CExamSliderCtrlDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_MY_SLIDER, &CExamSliderCtrlDlg::OnNMReleasedcaptureMySlider)
+	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
 
@@ -46,6 +48,9 @@ BOOL CExamSliderCtrlDlg::OnInitDialog()
 	//  프레임워크가 이 작업을 자동으로 수행합니다.
 	SetIcon(m_hIcon, TRUE);			// 큰 아이콘을 설정합니다.
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
+	
+	m_my_slider.SetRange(50, 150);
+	m_my_slider.SetTicFreq(10);
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
@@ -92,6 +97,30 @@ HCURSOR CExamSliderCtrlDlg::OnQueryDragIcon()
 
 void CExamSliderCtrlDlg::OnNMReleasedcaptureMySlider(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	
+	/*
+	int pos = m_my_slider.GetPos();
+
+	CString str;
+	str.Format(L"%d", pos);
+	int index = m_event_list.InsertString(-1, str);
+	m_event_list.SetCurSel(index);
+	*/
 	*pResult = 0;
+}
+
+
+void CExamSliderCtrlDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == IDC_MY_SLIDER)
+	{
+		if (nSBCode == SB_THUMBTRACK || nSBCode == SB_ENDSCROLL)
+		{
+			CString str;
+			str.Format(L"%d", m_my_slider.GetPos());
+			int index = m_event_list.InsertString(-1, str);
+			m_event_list.SetCurSel(index);
+		}
+	}
+
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }

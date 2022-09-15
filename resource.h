@@ -5,7 +5,6 @@
 #define IDD_EXAMSLIDERCTRL_DIALOG       102
 #define IDR_MAINFRAME                   128
 #define IDC_MY_SLIDER                   1000
-#define IDC_LIST1                       1001
 #define IDC_EVENT_LIST                  1001
 
 // Next default values for new objects

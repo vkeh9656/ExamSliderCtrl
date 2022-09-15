@@ -35,4 +35,5 @@ public:
 	afx_msg void OnNMReleasedcaptureMySlider(NMHDR* pNMHDR, LRESULT* pResult);
 	CListBox m_event_list;
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnTRBNThumbPosChangingMySlider(NMHDR* pNMHDR, LRESULT* pResult);
 };

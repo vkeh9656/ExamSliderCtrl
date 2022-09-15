@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CExamSliderCtrlDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_NOTIFY(NM_RELEASEDCAPTURE, IDC_MY_SLIDER, &CExamSliderCtrlDlg::OnNMReleasedcaptureMySlider)
 	ON_WM_HSCROLL()
+	ON_NOTIFY(TRBN_THUMBPOSCHANGING, IDC_MY_SLIDER, &CExamSliderCtrlDlg::OnTRBNThumbPosChangingMySlider)
 END_MESSAGE_MAP()
 
 
@@ -115,12 +116,33 @@ void CExamSliderCtrlDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollB
 	{
 		if (nSBCode == SB_THUMBTRACK || nSBCode == SB_ENDSCROLL)
 		{
-			CString str;
+			/*CString str;
 			str.Format(L"%d", m_my_slider.GetPos());
 			int index = m_event_list.InsertString(-1, str);
-			m_event_list.SetCurSel(index);
+			m_event_list.SetCurSel(index);*/
 		}
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CExamSliderCtrlDlg::OnTRBNThumbPosChangingMySlider(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// 이 기능을 사용하려면 Windows Vista 이상이 있어야 합니다.
+	// _WIN32_WINNT 기호는 0x0600보다 크거나 같아야 합니다.
+	NMTRBTHUMBPOSCHANGING* pNMTPC = reinterpret_cast<NMTRBTHUMBPOSCHANGING*>(pNMHDR);
+	
+
+	CString str;
+	/*str.Format(L"(%d), %d, %d", m_my_slider.GetPos(), pNMTPC->dwPos, pNMTPC->nReason);
+	int index = m_event_list.InsertString(-1, str);
+	m_event_list.SetCurSel(index);*/
+
+	if (pNMTPC->nReason == 5) str.Format(L"%d", pNMTPC->dwPos);
+	else str.Format(L"%d", m_my_slider.GetPos());
+	int index = m_event_list.InsertString(-1, str);
+	m_event_list.SetCurSel(index);
+
+	*pResult = 0;
 }
